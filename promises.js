@@ -1,15 +1,35 @@
 const cart = ["oneplus", "iphone"];
-const promise = createOrder(cart);
-console.log("Promise", promise); // in case of delay promise will be in "pending" state
+// const promise = createOrder(cart);
+// console.log("Promise", promise); // in case of delay promise will be in "pending" state
 
 // now we have added timeout so response will take some time to return. Once the response is ready next line will start execution
-promise
+// promise
+//   .then((orderId) => {
+//     console.log("Order Id", orderId);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// Promise chain
+createOrder(cart)
   .then((orderId) => {
-    console.log("Order Id", orderId);
+    console.log("Order Id: ", orderId);
+    return orderId;
   })
-  .catch((err) => {
-    console.log(err);
+  .then((orderId) => {
+    return paymentInformation(orderId);
+  })
+  .then((paymentInfo) => {
+    console.log("Payment Info: ", paymentInfo);
   });
+
+function paymentInformation(orderId) {
+  return new Promise((resolve, reject) => {
+    const resolveMessage = "Payment successful for " + orderId;
+    resolve(resolveMessage);
+  });
+}
 
 function createOrder(cart) {
   const pr = new Promise((resolve, reject) => {
@@ -31,3 +51,4 @@ function createOrder(cart) {
 function validateCart(cart) {
   return true;
 }
+
